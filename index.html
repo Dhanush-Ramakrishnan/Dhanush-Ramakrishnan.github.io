@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dhanush R — React.js Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0ede8;
+    --muted: #888;
+    --accent: #c8f064;
+    --accent2: #a8d84e;
+    --font-display: 'DM Serif Display', serif;
+    --font-body: 'Outfit', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 3rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(200,240,100,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,240,100,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridShift 20s linear infinite;
+  }
+  @keyframes gridShift { from { transform: translateY(0); } to { transform: translateY(60px); } }
+
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 32px; height: 1px;
+    background: var(--accent);
+  }
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 10vw, 120px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #0d0d0d;
+    border: 1px solid var(--accent);
+    font-weight: 500;
+  }
+  .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); }
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border2);
+  }
+  .btn-outline:hover { border-color: var(--text); }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; right: 3rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    writing-mode: vertical-rl;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px; height: 60px;
+    background: var(--border2);
+  }
+
+  /* SECTIONS */
+  section { padding: 6rem 3rem; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 3rem;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .about-headline {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 4vw, 52px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+  }
+  .about-headline em { font-style: italic; color: var(--accent); }
+  .about-text { color: var(--muted); font-size: 15px; line-height: 1.9; margin-bottom: 1rem; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid var(--border); margin-top: 2rem; }
+  .stat-item {
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 42px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+
+  /* SKILLS */
+  .skills-section { background: var(--surface); }
+  .skills-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 1rem; }
+  .skill-group { background: var(--surface); padding: 2rem; }
+  .skill-group-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.25rem;
+  }
+  .skill-item {
+    font-size: 14px;
+    color: var(--muted);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+    transition: color 0.2s;
+  }
+  .skill-item:last-child { border-bottom: none; }
+  .skill-item::before { content: '—'; color: var(--accent); font-size: 10px; }
+  .skill-item:hover { color: var(--text); }
+
+  /* EXPERIENCE */
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .exp-item:first-child { border-top: 1px solid var(--border); }
+  .exp-meta { }
+  .exp-period {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .exp-company { font-size: 13px; color: var(--muted); }
+  .exp-content { }
+  .exp-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+  }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .exp-bullets li {
+    font-size: 14px;
+    color: var(--muted);
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.7;
+  }
+  .exp-bullets li::before {
+    content: '→';
+    position: absolute; left: 0;
+    color: var(--accent);
+    font-size: 12px;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    background: var(--surface);
+    text-align: center;
+  }
+  .contact-headline {
+    font-family: var(--font-display);
+    font-size: clamp(42px, 6vw, 80px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  .contact-headline em { font-style: italic; color: var(--accent); }
+  .contact-sub { color: var(--muted); font-size: 15px; margin-bottom: 2.5rem; }
+  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+  .contact-detail {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .contact-detail a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .contact-detail a:hover { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; }
+
+  /* ANIMATIONS */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 0 1.5rem 4rem; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .exp-item { grid-template-columns: 1fr; gap: 1rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">DR / portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-tag">React.js Developer · Front-End Engineer</div>
+  <h1 class="hero-name">Dhanush<br/><em>R.</em></h1>
+  <p class="hero-sub">I build fast, responsive, and scalable web interfaces using React.js and modern JavaScript — turning complex designs into clean, production-ready code.</p>
+  <div class="hero-ctas">
+    <a href="#contact" class="btn btn-primary">Get in touch ↗</a>
+    <a href="#experience" class="btn btn-outline">View experience</a>
+  </div>
+  <div class="hero-scroll">scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">01 — About</div>
+  <div class="about-grid">
+    <div class="fade-up">
+      <h2 class="about-headline">Building interfaces that <em>actually work.</em></h2>
+    </div>
+    <div class="fade-up">
+      <p class="about-text">I'm a front-end developer with 3+ years of professional experience building responsive, high-performance web applications. Based in Tamil Nadu, India — working remotely.</p>
+      <p class="about-text">At Genome International, I've owned the full front-end stack: designing reusable React component libraries, integrating RESTful APIs, optimising rendering performance, and collaborating with designers and backend engineers in agile workflows.</p>
+      <p class="about-text">I write code that's as maintainable as it is functional — with a strong focus on cross-browser compatibility, clean architecture, and user experience.</p>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Years experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">2+</div>
+          <div class="stat-label">Years at current role</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Components shipped</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">1</div>
+          <div class="stat-label">Goal: great UX</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="skills-section">
+  <div class="section-label">02 — Skills</div>
+  <div class="skills-columns fade-up">
+    <div class="skill-group">
+      <div class="skill-group-title">LANGUAGES</div>
+      <div class="skill-item">JavaScript (ES6+)</div>
+      <div class="skill-item">HTML5</div>
+      <div class="skill-item">CSS3</div>
+      <div class="skill-item">Python</div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">REACT & ECOSYSTEM</div>
+      <div class="skill-item">React.js</div>
+      <div class="skill-item">React Hooks</div>
+      <div class="skill-item">JSX</div>
+      <div class="skill-item">Context API</div>
+      <div class="skill-item">Component Lifecycle</div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">TOOLING</div>
+      <div class="skill-item">Git & GitLab</div>
+      <div class="skill-item">Node.js</div>
+      <div class="skill-item">jQuery</div>
+      <div class="skill-item">NPM</div>
+      <div class="skill-item">VS Code</div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">PRACTICES</div>
+      <div class="skill-item">REST API Integration</div>
+      <div class="skill-item">Responsive Design</div>
+      <div class="skill-item">Performance Optimisation</div>
+      <div class="skill-item">Cross-browser Compatibility</div>
+      <div class="skill-item">Agile / Code Reviews</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">03 — Experience</div>
+  <div class="exp-list">
+    <div class="exp-item fade-up">
+      <div class="exp-meta">
+        <div class="exp-period">2023 — Present</div>
+        <div class="exp-company">Genome International · Remote</div>
+      </div>
+      <div class="exp-content">
+        <h3 class="exp-title">React.js Developer</h3>
+        <ul class="exp-bullets">
+          <li>Designed and developed reusable React.js UI components and front-end libraries used across multiple projects, ensuring scalability and maintainability.</li>
+          <li>Translated UI/UX wireframes into pixel-perfect, responsive interfaces with full cross-browser and cross-device compatibility.</li>
+          <li>Integrated RESTful APIs to fetch, display, and manage dynamic data — reducing unnecessary API calls to boost performance.</li>
+          <li>Managed application state using Context API patterns, ensuring predictable data flow across complex UI trees.</li>
+          <li>Optimised client-side rendering logic and refactored inefficient code, achieving measurable page load improvements.</li>
+          <li>Followed Git-based workflows (GitLab) including feature branching, code reviews, and merge requests.</li>
+          <li>Built an internal document management system with standardised Markdown-based documentation for cross-team knowledge sharing.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-meta">
+        <div class="exp-period">2022 — 2023</div>
+        <div class="exp-company">Genome International · Remote</div>
+      </div>
+      <div class="exp-content">
+        <h3 class="exp-title">Front-End Developer Intern</h3>
+        <ul class="exp-bullets">
+          <li>Built responsive, interactive UIs using HTML, CSS, JavaScript and React in a professional remote environment.</li>
+          <li>Gained hands-on experience building, testing, and deploying client-side interfaces.</li>
+          <li>Gained practical knowledge of responsive design principles, CSS layouts, and cross-browser compatibility through hands-on project work.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="section-label" style="justify-content:center;">04 — Contact</div>
+  <h2 class="contact-headline fade-up">Let's work<br/><em>together.</em></h2>
+  <p class="contact-sub fade-up">Open to full-time roles, contract work, and remote opportunities.</p>
+  <div class="contact-links fade-up">
+    <a href="mailto:rk.dhanush2001@gmail.com" class="btn btn-primary">rk.dhanush2001@gmail.com ↗</a>
+    <a href="tel:9080296853" class="btn btn-outline">+91 9080296853</a>
+  </div>
+  <div class="contact-detail fade-up">
+    <a href="https://github.com/dhanush-r" target="_blank">github.com/dhanush-r</a>
+    &nbsp;·&nbsp;
+    <a href="https://linkedin.com/in/dhanush-r" target="_blank">linkedin.com/in/dhanush-r</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2025 Dhanush R — React.js Developer</div>
+  <div class="footer-copy">Tamil Nadu, India</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
